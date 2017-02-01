@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h3>File Browser</h3>
+      <div class="">
+        <ol class="breadcrumb">
+          <li>
+            <%= link_to '/' do %>
+              <%= octicon "home", :height => 16 %>
+            <% end %>
+          </li>
+          <% parts = @path.split('/') %>
+          <% parts.each_with_index do |part, i| %>
+            <li>
+              <% if i == parts.length - 1 %>
+                <%= part %>
+              <% else %>
+                <%= link_to part, '/'+parts[0..i].join('/') %>
+              <% end %>
+            </li>
+          <% end %>
+        </ol>
+
+        <% if @files %>
+          <ul class="list-group">
+            <% @files.each do |file| %>
+              <% path = file.gsub(@root, '') %>
+              <% name = file.gsub(@full_path, '') %>
+              <li class="list-group-item">
+                <% if File.directory?(file) %>
+                  <%= octicon "file-directory", :height => 16 %>
+                <% else %>
+                  <%= octicon "file-code", :height => 16 %>
+                <% end %>
+                <%= link_to name, path %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+
+          <% if @file %>
+            <div class="codehilite">
+              <%= render_file @file %>
+            </div>
+          <% end %>
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
