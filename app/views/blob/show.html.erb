@@ -1,7 +1,24 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h3>File Browser</h3>
+      <h3>
+        <%= @name %> -
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <%= @current_version %> <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <% @versions.each do |version| %>
+            <li>
+              <a href="/?version=<%= version %>">
+                <%= version %>
+              </a>
+            </li>
+            <% end %>
+          </ul>
+        </div>
+      </h3>
       <div class="">
         <ol class="breadcrumb">
           <li>
@@ -15,7 +32,7 @@
               <% if i == parts.length - 1 %>
                 <%= part %>
               <% else %>
-                <%= link_to part, '/'+parts[0..i].join('/') %>
+                <%= link_to part, '/'+parts[0..i].join('/')+ "?version=#{@current_version}" %>
               <% end %>
             </li>
           <% end %>
@@ -24,29 +41,26 @@
         <% if @files %>
           <ul class="list-group">
             <% @files.each do |file| %>
-              <% path = file.gsub(@root, '') %>
-              <% name = file.gsub(@full_path, '') %>
+              <% path = file.split('/')[-2..-1].join('/') %>
+              <% name = file.split('/').last %>
               <li class="list-group-item">
                 <% if File.directory?(file) %>
                   <%= octicon "file-directory", :height => 16 %>
                 <% else %>
                   <%= octicon "file-code", :height => 16 %>
                 <% end %>
-                <%= link_to name, path %>
+                <%= link_to name, path + "?version=#{@current_version}" %>
               </li>
             <% end %>
           </ul>
         <% end %>
 
-          <% if @file %>
-            <div class="codehilite">
-              <%= render_file @file %>
-            </div>
-          <% end %>
-
-
+        <% if @file %>
+          <div class="codehilite">
+            <%= render_file @file %>
+          </div>
+        <% end %>
       </div>
-
     </div>
   </div>
 </div>
