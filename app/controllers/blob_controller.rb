@@ -14,11 +14,12 @@ class BlobController < ApplicationController
 
       # show readme if present in that directory
       if @files.any?{|file| file.split('/').last.match(/^readme/i) }
-        readme_path = @files.find{|file| file.split('/').last.match(/^readme/i) }
-        @file = File.open(readme_path)
+        @file_path = @files.find{|file| file.split('/').last.match(/^readme/i) }
+        @file = File.open(@file_path)
       end
     else
       # show file
+      @file_path = @full_path
       @file = File.open(@full_path)
     end
   end

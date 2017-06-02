@@ -56,8 +56,15 @@
         <% end %>
 
         <% if @file %>
-          <div class="codehilite">
-            <%= render_file @file %>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <%= octicon "file-code", :height => 16 %>
+              <small><%= @file_path.split('/').last %></small>
+              <small class='pull-right'><%= number_to_human_size File.size(@file) %></small>
+            </div>
+            <div class="codehilite">
+              <%= render_file @file %>
+            </div>
           </div>
         <% end %>
       </div>
